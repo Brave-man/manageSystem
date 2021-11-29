@@ -119,3 +119,23 @@ class CourseHandler(BaseHandler, ABC):
             self.simplewrite()
         else:
             self.simplewrite(code=0, msg="更新失败")
+
+    async def delete(self):
+        """
+        删除课程
+        :return:
+        """
+        identity = self.identity
+        if identity != "teacher":
+            raise BaseError(msg="非法请求")
+
+        teacher_uid = self.user_uid
+        course_uid = self.get_body_argument("course_uid")
+
+        # 更新课程
+        course_obj = CourserService()
+        result = course_obj.update_course(course_uid, teacher_uid, {"status": 0})
+        if result:
+            self.simplewrite()
+        else:
+            self.simplewrite(code=0, msg="删除失败")
