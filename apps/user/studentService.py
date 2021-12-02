@@ -27,7 +27,7 @@ class StudentService(BaseSqlService):
         """
         table = Table(self.DEFAULT_TABLE)
 
-        fields = ["student_uid", "student_name", "username", "password", "status", "class_uid"]
+        fields = ["student_uid", "student_name", "username", "password", "status"]
         where_list = [
             table.username == username
         ]
@@ -191,7 +191,7 @@ class StudentService(BaseSqlService):
         """
         table = Table(self.DEFAULT_TABLE)
 
-        fields = ["student_uid", "student_name"]
+        fields = ["student_uid", "student_name", "class_uid"]
         where_list = [
             table.student_uid == student_uid,
         ]
