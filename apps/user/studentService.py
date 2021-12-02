@@ -27,7 +27,7 @@ class StudentService(BaseSqlService):
         """
         table = Table(self.DEFAULT_TABLE)
 
-        fields = ["student_uid", "student_name", "username", "password", "status"]
+        fields = ["student_uid", "student_name", "username", "password", "status", "class_uid"]
         where_list = [
             table.username == username
         ]

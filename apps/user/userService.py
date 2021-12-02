@@ -8,6 +8,7 @@
 from apps.base.service import BaseSqlService
 from apps.user.studentService import StudentService
 from apps.user.teacherService import TeacherService
+from apps.classes.classService import ClassService
 from tools.error import BaseError
 from tools.usual import auth_password
 
@@ -17,7 +18,8 @@ class UserService(BaseSqlService):
     用户service
     """
 
-    def auth_user_login(self, identify, username, password):
+    @staticmethod
+    def auth_user_login(identify, username, password):
         """
         用户登录
         :param identify: 身份
@@ -44,7 +46,8 @@ class UserService(BaseSqlService):
 
         return user_uid
 
-    def query_user_profile(self, identify, user_uid):
+    @staticmethod
+    def query_user_profile(identify, user_uid):
         """
         查询个人信息
         :param identify: 身份
@@ -59,7 +62,18 @@ class UserService(BaseSqlService):
         profile = user_obj.query_profile(user_uid)
 
         if identify == "student":
-            name = profile["student_name"]
+            class_name = ""
+            student_name = profile["student_name"]
+            # 查询班级
+            class_uid = profile["class_uid"]
+            if class_uid:
+                class_obj = ClassService()
+                classes = class_obj.query_class_by_class_uid_list([class_uid])
+                if classes:
+                    class_name = classes[0]["class_name"]
+
+            name = f"{class_name} {student_name}"
+
         else:
             name = profile["teacher_name"]
 
